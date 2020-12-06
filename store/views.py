@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from django.views import View
 
 
-# video 50 running
+# video 53 running
 
 class Index(View):
     def get(self,request):
@@ -167,6 +167,14 @@ class Checkout(View):
         request.session['cart'] = {}
 
         return redirect('cart')
+
+
+class OrderView(View):
+    def get(self,request):
+        customer = request.session.get('customer')
+        orders = Order.get_orders_by_customer(customer)
+        print(orders)
+        return render(request,'orders.html',{'orders':orders})
 
 
 
