@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% block content %}
+<div class="container">
+
+  <div class="border rounded p-4 m-3">
+    <h1 class='text-center'>Cart List</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Sno.</th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+    {% for product in products %}
+        <tr>          
+          <td>{{ forloop.counter }}</td>
+          <td><img src="{{ product.image.url }}" width="100px" height="100px" alt=""></td>
+          <td>{{ product.name}}</td>
+          <td>{{ product.category}}</td>
+          <td>{{ product.price|currency }}</td>
+          <td>{{ product|cart_quantity:request.session.cart}}</td>
+          <td>{{ product|price_total:request.session.cart|currency  }}</td>
+        </tr>
+    {% endfor %}
+        
+      </tbody>
+      <tfoot>
+        <tr>
+          <td  colspan="5"></td>
+          <td>Total</td>        
+          <td>= {{ products|total_cart_price:request.session.cart|currency }}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="p-3 m-3">
+      <a href="#"  class="btn btn-info float-right btn btn-primary" data-toggle="modal" data-target="#exampleModal">Check Out</a>
+    </div>
+   
+  </div>
+   
+</div>
+
+
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Check Out Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="p-2 m-2">
+          <form action="/check-out" method="POST">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" class="form-control" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" name="phone" id="phone" class="form-control" placeholder="">
+          </div>
+            <input type="submit" class="btn btn-info float-right" value="Check Out">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
