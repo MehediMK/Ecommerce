@@ -10,7 +10,7 @@ from .middlewares.auth import auth_middleware
 from django.utils.decorators import method_decorator
 
 
-# video 56 running
+# video 57 running
 
 class Index(View):
     def get(self,request):

@@ -63,19 +63,45 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="p-2 m-2">
+        <div class="p-1 m-1">
+          <div class="payment">
+            <p class="text-center">*Make your payment in this number through any bKash Customer Wallet <br><small><a href="#paymentinst">payment instruction</a></small></p>
+            <hr>
+            <h4 class="text-center">Amount of Taka = {{ products|total_cart_price:request.session.cart|currency }}</h4>
+            <hr>
+            <h4 class="text-center text-success"><small class="text-danger">Merchant bKash No:</small> 01879205233</h4><hr>
+          </div>
           <form action="/check-out" method="POST">
           {% csrf_token %}
           <div class="form-group">
-            <label for="address">Address:</label>
-            <input type="text" name="address" id="address" class="form-control" placeholder="">
+            <label for="bkashtrxid">Enter bKash TrxID:</label>
+            <input type="text" name="bkashtrxid" id="bkashtrxid" class="form-control" placeholder="bKash TrxID:" required>
           </div>
           <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" name="phone" id="phone" class="form-control" placeholder="">
+            <label for="address">Address:</label>
+            <input type="text" name="address" id="address" class="form-control" placeholder="# 193,east-kazipara,mirpur-10,Dhaka" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone No:</label>
+            <input type="text" name="phone" id="phone" class="form-control" placeholder="018******" required>
           </div>
             <input type="submit" class="btn btn-info float-right" value="Check Out">
           </form>
+          <div class="paymentinst" id="paymentinst">
+            <hr><br><br>
+            <h5 class="text-waring">***How to Make Payment with bKash:</h5><hr>
+            <ol>
+              <li>Go to your bkash Mobile Menu by dialing *247#</li>
+              <li>Choose "Payment"</li>
+              <li>Enter the Merchant bKash Wallet No: 01879205233</li>
+              <li>Enter the Amount: {{ products|total_cart_price:request.session.cart|currency }}</li>
+              <li>Enter Reference: 33{{ request.session.customer }}</li>
+              <li>Enter the Counter Number: 123</li>
+              <li>Now enter your bkash Menu PIN to Confirm</li>
+              <li>Done! you will receive a confirmation message from bKash</li>
+              <li>Put the Transaction ID in the Upper box and press "Checkout"</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
