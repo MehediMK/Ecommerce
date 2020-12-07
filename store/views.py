@@ -156,22 +156,24 @@ class Cart(View):
 class Checkout(View):
     def post(self,request):
         address = request.POST.get('address')
+        bkashtrxid = request.POST.get('bkashtrxid')
         phone = request.POST.get('phone')
         customer = request.session.get('customer')
         cart = request.session.get('cart')
         products = Product.get_product_by_id(list(cart.keys()))
-        print(address, phone, customer, cart, products)
+        print(address, phone, customer, cart, products,bkashtrxid)
 
         for product in products:
             # print(cart.get(str(product.id)))
             order = Order(customer=Customer(id=customer),
                           product=product,
                           price=product.price,
+                          bkashTrxID=bkashtrxid,
                           address=address,
                           phone=phone,
                           quantity=cart.get(str(product.id)))
             order.save()
-            print(Customer(id=customer),product,product.price,address,phone,cart.get(str(product.id)))
+            print(Customer(id=customer),product,product.price,address,phone,cart.get(str(product.id)),bkashtrxid)
         request.session['cart'] = {}
 
         return redirect('cart')

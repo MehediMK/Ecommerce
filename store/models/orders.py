@@ -8,6 +8,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     price = models.IntegerField()
+    bkashTrxID = models.CharField(max_length=150,default='',blank=True)
     address = models.CharField(max_length=150,default='')
     phone = models.CharField(max_length=15,default='')
     date = models.DateField(default = datetime.datetime.today)
