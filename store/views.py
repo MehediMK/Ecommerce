@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
 from .models.product import Product
 from .models.category import Category
@@ -6,9 +6,11 @@ from .models.customer import Customer
 from .models.orders import Order
 from django.contrib.auth.hashers import make_password,check_password
 from django.views import View
+from .middlewares.auth import auth_middleware
+from django.utils.decorators import method_decorator
 
 
-# video 53 running
+# video 56 running
 
 class Index(View):
     def get(self,request):
@@ -109,7 +111,9 @@ class Signup(View):
 
 
 class Login(View):
+    return_Url = None
     def get(self,request):
+        Login.return_Url = request.GET.get('return_Url')
         return render(request,'login.html')
     def post(self,request):
         error = None
@@ -122,8 +126,12 @@ class Login(View):
             print(flag)
             if flag:
                 request.session['customer'] = customer.id
-                
-                return redirect('home')
+
+                if Login.return_Url:
+                    return HttpResponseRedirect(Login.return_Url)
+                else:
+                    Login.return_Url = None
+                    return redirect('home')
             else:
                 error = "You enter wrong email or password."
                 return render(request,'login.html',{'error':error})
@@ -170,6 +178,7 @@ class Checkout(View):
 
 
 class OrderView(View):
+    @method_decorator(auth_middleware)
     def get(self,request):
         customer = request.session.get('customer')
         orders = Order.get_orders_by_customer(customer)

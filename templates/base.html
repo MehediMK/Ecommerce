@@ -35,7 +35,13 @@
             {% if request.session.customer %}
 
             <li class="nav-item active">
-                <a class="nav-link" href="/cart">Cart <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/cart">Cart 
+                    {% if request.session.cart %}
+                    <small class="badge badge-info"> {{request.session.cart.keys|length}} </small>
+                    {% else %}
+                    <small class="badge badge-info"> 0 </small>
+                    {% endif %}
+                     <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/order">Orders <span class="sr-only">(current)</span></a>
