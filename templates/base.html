@@ -12,19 +12,22 @@
   <body>
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">TheMMHKbd</a>
+    <a class="navbar-brand" href="/">EBazar</a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
         aria-expanded="false" aria-label="Toggle navigation"></button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav m-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Contact</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">About Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Payment</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
@@ -51,7 +54,13 @@
             </li>
             {% else %}
             <li class="nav-item active">
-                <a class="nav-link" href="/cart">Cart <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/cart">Cart 
+                    {% if request.session.cart %}
+                    <small class="badge badge-info"> {{request.session.cart.keys|length}} </small>
+                    {% else %}
+                    <small class="badge badge-info"> 0 </small>
+                    {% endif %}
+                     <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>

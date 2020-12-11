@@ -26,7 +26,20 @@
           <td>{{ product.name}}</td>
           <td>{{ product.category}}</td>
           <td>{{ product.price|currency }}</td>
-          <td>{{ product|cart_quantity:request.session.cart}}</td>
+          <td>
+            <form action="/incdec" class="col-3 p-0 btn btn-success" method="post">
+              {% csrf_token %}
+              <input type="text" hidden name="productid" value="{{product.id}}" id="">
+              <input type="text" hidden name="remove" value="True" id="">
+              <input type="submit" class='m-0 btn btn-success ' value="-">
+          </form>
+            {{ product|cart_quantity:request.session.cart}}
+            <form action="/incdec" class="col-3 p-0 btn btn-success" method="post">
+              {% csrf_token %}
+              <input type="text" hidden name="productid" value="{{product.id}}" id="">
+              <input type="submit" class='btn btn-success' value="+">
+          </form>
+          </td>
           <td>{{ product|price_total:request.session.cart|currency  }}</td>
         </tr>
     {% endfor %}
@@ -40,10 +53,15 @@
         </tr>
       </tfoot>
     </table>
-
+{% if request.session.customer %}
     <div class="p-3 m-3">
       <a href="#"  class="btn btn-info float-right btn btn-primary" data-toggle="modal" data-target="#exampleModal">Check Out</a>
     </div>
+    {% else %}
+    <div class="p-3 m-3">
+      <a href="/login"  class="btn btn-info float-right btn btn-primary">Login</a>
+    </div>
+  {% endif %}
    
   </div>
    
@@ -51,8 +69,9 @@
 
 
 <!-- Button trigger modal -->
-
+{% if request.session.customer %}
 <!-- Modal -->
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -107,5 +126,8 @@
     </div>
   </div>
 </div>
+{% endif %}
+
+<!-- end model -->
 
 {% endblock %}

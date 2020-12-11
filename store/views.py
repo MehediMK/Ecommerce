@@ -147,10 +147,19 @@ def logout(request):
 
 class Cart(View):
     def get(self,request):
-        ids = list(request.session.get('cart').keys())
-        products = Product.get_product_by_id(ids)
-        print(products)
-        return render(request,'cart.html',{'products':products})
+        mycart = request.session.get('cart')
+        if mycart:
+            ids = list(request.session.get('cart').keys())
+            products = Product.get_product_by_id(ids)
+            print(products)
+            return render(request,'cart.html',{'products':products})
+        else:
+            request.session['cart'] = {}
+            ids = list(request.session.get('cart').keys())
+            products = Product.get_product_by_id(ids)
+            print(products)
+            return render(request,'cart.html',{'products':products})
+
 
 
 class Checkout(View):
@@ -183,11 +192,33 @@ class OrderView(View):
     @method_decorator(auth_middleware)
     def get(self,request):
         customer = request.session.get('customer')
-        orders = Order.get_orders_by_customer(customer)
+        orders = Order.get_orders_by_customer(customer) 
         print(orders)
         return render(request,'orders.html',{'orders':orders})
 
 
-
+class IncDec(View):
+    def post(self,request):
+        product = request.POST.get('productid')
+        remove = request.POST.get('remove')
+        cart = request.session.get('cart')
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                if remove:
+                    if quantity <= 1:
+                        cart.pop(product)
+                    else:
+                        cart[product] = quantity-1
+                else:
+                    cart[product] = quantity+1
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+        request.session['cart'] = cart
+        print(request.session['cart'])
+        return redirect('cart')
 
 

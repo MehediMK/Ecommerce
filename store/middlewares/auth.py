@@ -9,4 +9,4 @@ def auth_middleware(get_response):
             return redirect(f'login?return_Url={returnUrl}')
         response = get_response(request)
         return response
-    return middleware
+    return middleware 
