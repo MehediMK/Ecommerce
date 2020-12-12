@@ -25,7 +25,7 @@
           <td><img src="{{ product.image.url }}" width="100px" height="100px" alt=""></td>
           <td>{{ product.name}}</td>
           <td>{{ product.category}}</td>
-          <td>{{ product.price|currency }}</td>
+          <td>{{ product.price|currency }}/{{product.unit}}</td>
           <td>
             <form action="/incdec" class="col-3 p-0 btn btn-success" method="post">
               {% csrf_token %}
@@ -33,7 +33,7 @@
               <input type="text" hidden name="remove" value="True" id="">
               <input type="submit" class='m-0 btn btn-success ' value="-">
           </form>
-            {{ product|cart_quantity:request.session.cart}}
+            {{ product|cart_quantity:request.session.cart}}{{product.unit}}
             <form action="/incdec" class="col-3 p-0 btn btn-success" method="post">
               {% csrf_token %}
               <input type="text" hidden name="productid" value="{{product.id}}" id="">

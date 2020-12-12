@@ -24,7 +24,7 @@
                         <img src="{{ product.image.url }}" alt="" height="250px" width="250px" class="card-img-top">
                         <div class="card-body">
                             <p>{{product.name}}</p>
-                            <p>{{product.price|currency}}</p>
+                            <p>{{product.price|currency}}/{{product.unit}}</p>
                         </div>
                         <div class="card-footer no-gutters">
                             
@@ -36,7 +36,7 @@
                                     <input type="text" hidden name="remove" value="True" id="">
                                     <input type="submit" class='m-0 btn btn-success  btn-block ' value="-">
                                 </form>
-                                <div class="border text-center col">{{product|cart_quantity:request.session.cart}} in cart</div>
+                                <div class="border text-center col">{{product|cart_quantity:request.session.cart}} {{product.unit}}</div>
                                 <form action="/#{{product.id}}" class="col-3 p-0 btn btn-block btn-success" method="post">
                                     {% csrf_token %}
                                     <input type="text" hidden name="productid" value="{{product.id}}" id="">
