@@ -55,6 +55,33 @@
                     </div>
                 </div>
                 {% endfor %}
+
+                 <!-- paginator -->
+              <div class="container"><br>
+                {% if products.has_other_pages %}
+                <ul class="pagination justify-content-center ">
+                  {% if products.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?productview={{ products.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">Previous</a></li>
+                  {% endif %}
+                  {% for i in products.paginator.page_range %}
+                  {% if products.number == i %}
+                  <li class="page-item"><a class="page-link active bg-danger text-light" href="javascript:void(0);">{{ i }}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="?productview={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if products.has_next %}
+                  <li class="page-item"><a class="page-link" href="?productview={{ products.next_page_number }}">Next</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+                  {% endif %}
+                </ul>
+                {% endif %}<br>
+              </div>
+            <!-- end paginator -->
+
             </div>
         </div>
     </div>

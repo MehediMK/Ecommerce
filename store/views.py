@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from django.views import View
 from .middlewares.auth import auth_middleware
 from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 
 # video 57 running
@@ -25,8 +26,19 @@ class Index(View):
         else:
             products = Product.get_all_products()
 
+        # this query for pagination
+        productview = request.GET.get('productview', 1)
+        home_paginator = Paginator(products, 12)
+        try:
+            products_list = home_paginator.page(productview)
+        except PageNotAnInteger:
+            products_list = home_paginator.page(1)
+        except EmptyPage:
+            products_list = home_paginator.page(home_paginator.num_pages)
+        # end pagination query
+
         context = {
-            'products':products,
+            'products':products_list,
             'categorys':categories
         }
         print('your are: ',request.session.get('customer'))

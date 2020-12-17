@@ -1,0 +1,338 @@
+{% extends 'adminBase.html' %}
+
+
+
+<!-- main content area -->
+{% block content %}
+  <div class="content">
+    <div class="container-fluid">
+
+
+      <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-warning card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">content_copy</i>
+              </div>
+              <p class="card-category">Used Space</p>
+              <h3 class="card-title">49/50
+                <small>GB</small>
+              </h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons text-warning">warning</i>
+                <a href="#pablo" class="warning-link">Get More Space...</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">store</i>
+              </div>
+              <p class="card-category">Revenue</p>
+              <h3 class="card-title">$34,245</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> Last 24 Hours
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">info_outline</i>
+              </div>
+              <p class="card-category">Fixed Issues</p>
+              <h3 class="card-title">75</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">local_offer</i> Tracked from Github
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="fa fa-twitter"></i>
+              </div>
+              <p class="card-category">Followers</p>
+              <h3 class="card-title">+245</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">update</i> Just Updated
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- my made order card -->
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <div class="card">
+            <div class="card-header card-header-warning">
+              <h4 class="card-title">Order List</h4>
+              <p class="card-category">Only Admin can see Order List.</p>
+            </div>
+            <div class="card-body table-responsive">
+              <table class="table table-hover">
+                <thead class="text-warning">
+                  <th class="text-light">ID</th>
+                  <th class="text-light">Product Name</th>
+                  <th class="text-light">Customer Email</th>
+                  <th class="text-light">Order Quantity</th>
+                  <th class="text-light">bKash TrxID</th>
+                  <th class="text-light">Address</th>
+                  <th class="text-light">Phone</th>
+                  <th class="text-light">Date</th>
+                  <th class="text-light">Status</th>
+                </thead>
+                <tbody>
+                  {% if orders %}
+                    {% for order in orders %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ order.product }}</td>
+                    <td>{{ order.customer }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.bkashTrxID }}</td>
+                    <td>{{ order.address }}</td>
+                    <td>{{ order.phone }}</td>
+                    <td>{{ order.date }}</td>
+                    {% if order.status %}
+                    <td ><kbd class="bg-success text-light font-weight-bold ">Complete</kbd></td>
+                      {% else %}
+                      <td ><kbd class="bg-danger text-light font-weight-bold ">Pangding</kbd></td>
+                    {% endif %}
+                  </tr>
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+              <!-- paginatior -->
+              <div class="container">
+                {% if orders.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                  {% if orders.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?orderpage={{ orders.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">Previous</a></li>
+                  {% endif %}
+                  {% for i in orders.paginator.page_range %}
+                  {% if orders.number == i %}
+                  <li class="page-item"><a class="page-link active bg-info" href="javascript:void(0);">{{ i }}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="?orderpage={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if orders.has_next %}
+                  <li class="page-item"><a class="page-link" href="?orderpage={{ orders.next_page_number }}">Next</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+                  {% endif %}
+                </ul>
+                {% endif %}
+              </div>
+            <!-- end paginator -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- my made order card end -->
+     
+      <!-- my 1st made Product card -->
+      <div class="row">
+        <div class="col-lg-12 col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              
+              <div class="row m-2">
+                <div class="col-lg-8 col-md-12">                  
+                  <h4 class="card-title">Product List</h4>
+                  <p class="card-category">You can Add new Product.</p>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                  <a href="{% url 'addproduct' %}" class="btn btn-success ">Add Product</a>
+                </div>
+              </div>
+              
+            </div>
+            <div class="card-body table-responsive">
+              <table class="table table-hover">
+                <thead class="text-warning">
+                  <th class="text-light">ID</th>
+                  <th class="text-light text-center">Name</th>
+                  <th class="text-light text-center">Price</th>
+                  <th class="text-light text-center">Unit</th>
+                  <th class="text-light text-center">Category</th>
+                  <th class="text-light text-center">Desc</th>
+                  <th class="text-light text-center">Image</th>
+                </thead>
+                <tbody>
+                  {% if products %}
+                    {% for product in products %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.unit }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>{{ product.description }}</td>
+                    <td><img src="{{ product.image.url }}" width="100px" height="100px" alt=""></td>
+                  </tr>
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+              <!-- paginator -->
+              <div class="container">
+                {% if products.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                  {% if products.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">Previous</a></li>
+                  {% endif %}
+                  {% for i in products.paginator.page_range %}
+                  {% if products.number == i %}
+                  <li class="page-item"><a class="page-link active bg-info" href="javascript:void(0);">{{ i }}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if products.has_next %}
+                  <li class="page-item"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+                  {% endif %}
+                </ul>
+                {% endif %}
+              </div>
+            <!-- end paginator -->
+            </div>
+          </div>          
+          
+        </div>
+      </div>
+      <!-- my 1st made product card end -->
+
+            
+      <!-- my 2nd made product and customer card -->
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title">Customers List</h4>
+              <p class="card-category">You can Add new Customers.</p>
+            </div>
+            <div class="card-body table-responsive">
+              <table class="table table-hover">
+                <thead class="text-warning">
+                  <th>ID</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                </thead>
+                <tbody>
+                  {% if customers %}
+                    {% for customer in customers %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ customer.first_name }}</td>
+                    <td>{{ customer.last_name }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.email }}</td>
+                  </tr>
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
+          <div class="card">
+            <div class="card-header card-header-success">
+
+              <div class="row m-2">
+                <div class="col-lg-8 col-md-12">                  
+                  <h4 class="card-title">Category List</h4>
+                  <p class="card-category">You can Add new Category.</p>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                  <a href="{% url 'addcategory' %}" class="btn btn-info">Add Category</a>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-body table-responsive">
+              <table class="table table-hover">
+                <thead class="text-warning">
+                  <th>ID</th>
+                  <th>Name</th>
+                </thead>
+                <tbody>
+                  {% if categorys %}
+                    {% for category in categorys %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ category.name }}</td>
+                  </tr>
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              
+              <!-- paginatior -->
+              <div class="container">
+                {% if categorys.has_other_pages %}
+                <ul class="pagination justify-content-center">
+                  {% if categorys.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?categorypage={{ categorys.previous_page_number }}">Previous</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link disabled" href="javascript:void(0);">Previous</a></li>
+                  {% endif %}
+                  {% for i in categorys.paginator.page_range %}
+                  {% if categorys.number == i %}
+                  <li class="page-item"><a class="page-link active bg-info" href="javascript:void(0);">{{ i }}</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="?categorypage={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if categorys.has_next %}
+                  <li class="page-item"><a class="page-link" href="?categorypage={{ categorys.next_page_number }}">Next</a></li>
+                  {% else %}
+                  <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+                  {% endif %}
+                </ul>
+                {% endif %}
+              </div>
+            <!-- end paginator -->
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+      <!-- my 2nd made product and customer card end -->
+
+    </div>
+  </div>
+{% endblock %}
+<!-- end main content area -->

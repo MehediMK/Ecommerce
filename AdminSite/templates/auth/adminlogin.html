@@ -1,0 +1,37 @@
+{% extends 'adminbase.html' %}
+
+{% block login%}
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 mx-auto ">
+        <div class="card-body">
+          <form action="{% url 'adminlogin' %}" method="POST">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Username</label>
+                  <input type="text" name="username" class="form-control">
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="bmd-label-floating">Password</label>
+                  <input type="password" name="password" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="Admin Login">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
