@@ -1,10 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView,View
 from store.models import category,orders,product,customer
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.contrib.auth import authenticate,login,logout
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .forms import AddCategoryForm
+from .forms import AddCategoryForm,AddProductForm
 
 
 class DashboardView(View):
@@ -88,9 +88,25 @@ class AddCategory(CreateView):
 
 class AddProduct(CreateView):
     model = product.Product
+    form_class = AddProductForm
     template_name = 'CRUD/addproduct.html'
-    fields = ['name','price','unit','description','category','image']
     success_url = '/adminsite'
 
 
-    
+class CategoryDelete(View):
+    def get(self,request,id):
+        data = get_object_or_404(category.Category, id=id)
+        data.delete()
+        return redirect('/adminsite')
+
+class ProductDelete(View):
+    def get(self,request,id):
+        data = get_object_or_404(product.Product, id=id)
+        data.delete()
+        return redirect('/adminsite')
+
+
+
+
+
+

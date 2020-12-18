@@ -179,6 +179,7 @@
                   <th class="text-light text-center">Category</th>
                   <th class="text-light text-center">Desc</th>
                   <th class="text-light text-center">Image</th>
+                  <th class="text-light text-center">Action</th>
                 </thead>
                 <tbody>
                   {% if products %}
@@ -190,7 +191,11 @@
                     <td>{{ product.unit }}</td>
                     <td>{{ product.category }}</td>
                     <td>{{ product.description }}</td>
-                    <td><img src="{{ product.image.url }}" width="100px" height="100px" alt=""></td>
+                    <td>
+                      <img src="{{ product.image.url }}" width="100px" height="100px" alt="">
+                    </td>
+                      <td><a href="{% url 'productdelete' product.id %}"> <i class="material-icons">delete</i></a></td>
+                    </tr>
                   </tr>
                     {% endfor %}
                   {% endif %}
@@ -229,7 +234,7 @@
       <!-- my 1st made product card end -->
 
             
-      <!-- my 2nd made product and customer card -->
+      <!-- my 2nd made customer and category card -->
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <div class="card">
@@ -283,6 +288,7 @@
                 <thead class="text-warning">
                   <th>ID</th>
                   <th>Name</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   {% if categorys %}
@@ -290,6 +296,7 @@
                   <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ category.name }}</td>
+                    <td><a href="{% url 'deletecategory' category.id %}"> <i class="material-icons">delete</i></a></td>
                   </tr>
                     {% endfor %}
                   {% endif %}
