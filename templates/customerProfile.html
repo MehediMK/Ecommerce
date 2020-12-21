@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class='text-center'><u>Custom Profile</u></h1>
+    <div class="col-md-6 offset-4">
+        {% if customer %}
+    <div class="card " style="width:400px">
+        <img class="card-img-top" src="{% static 'img_avatar.png' %}" alt="Card image" style="width:100%">
+        <div class="card-body">
+          <h4 class="card-title text-uppercase ">{{customer.first_name }} {{ customer.last_name}}</h4>
+          <p class='text-uppercase'>Phone no: {{ customer.phone }}</p>
+          <p class='text-uppercase'> Email: {{ customer.email }}</p>
+          
+        </div>
+      </div>
+      {% endif %}
+    </div>
+</div>
+{% endblock %}

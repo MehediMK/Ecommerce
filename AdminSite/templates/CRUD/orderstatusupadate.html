@@ -1,0 +1,29 @@
+{% extends 'adminbase.html' %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8 mx-auto ">
+          <h3 class="text-center text-white">Update Order Product</h3>
+          <div class="card-body">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    {{ form.as_p }} 
+                  </div>
+                </div>
+              </div>                      
+  
+              <input type="submit" class="btn btn-primary" value="Change">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

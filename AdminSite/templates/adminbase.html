@@ -49,31 +49,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="./tables.html">
-              <i class="material-icons">content_paste</i>
-              <p>Table List</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./typography.html">
-              <i class="material-icons">library_books</i>
-              <p>Typography</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./icons.html">
-              <i class="material-icons">bubble_chart</i>
-              <p>Icons</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./map.html">
-              <i class="material-icons">location_ons</i>
-              <p>Maps</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./notifications.html">
+            <a class="nav-link" href="{% url 'ContactNotificaton' %}">
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
             </a>
@@ -111,7 +87,7 @@
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
+            <!-- <form class="navbar-form">
               <div class="input-group no-border">
                 <input type="text" value="" class="form-control" placeholder="Search...">
                 <button type="submit" class="btn btn-default btn-round btn-just-icon">
@@ -119,32 +95,38 @@
                   <div class="ripple-container"></div>
                 </button>
               </div>
-            </form>
+            </form> -->
             <ul class="navbar-nav">
+              {% if contacts %}
               <li class="nav-item dropdown">
                 <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
-                  <span class="notification">5</span>
+                  <span class="notification">{{ contactscount }}</span>
                   <p class="d-lg-none d-md-block">
                     Some Actions
                   </p>
                 </a>
+                
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="javascript:void(0)">Mike John responded to your email</a>
-                  <a class="dropdown-item" href="javascript:void(0)">You have 5 new tasks</a>
-                  <a class="dropdown-item" href="javascript:void(0)">You're now friend with Andrew</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Another One</a>
+                  <h6 class="text-center"> <u>Notificatons List</u></h6>
+                  <table class="table">
+                    {% for contact in contacts %}
+                    <tr>
+                      <td>
+                        <a class="dropdown-item" onclick="md.showNotification('top','center')" href="{% url 'ContactNotificaton' %}">{{ contact.shortComments}}...</a>
+                      </td>
+                      <td>
+                          <a class="dropdown-item" href="{% url 'deletecontact' contact.id %}"><i class="material-icons">delete</i></a>
+                      </td>
+                  
+                    </tr>
+                    
+                  {% endfor %}
+                  </table>
+                  
                 </div>
               </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">person</i>
-                  <p class="d-lg-none d-md-block">
-                    Account
-                  </p>
-                </a>
-              </li> -->
+              {% endif %}
             </ul>
           </div>
         </div>

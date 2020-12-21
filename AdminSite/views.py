@@ -1,15 +1,20 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView,View
+
 from store.models import category,orders,product,customer
+from store.models.contact import ContactModel
+from store.models.orders import Order
+
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from django.contrib.auth import authenticate,login,logout
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
-from .forms import AddCategoryForm,AddProductForm
+from .forms import AddCategoryForm,AddProductForm,OrderStatusUpdateForm
 
 
 class DashboardView(View):
     def get(self,request):
         customers = customer.Customer.objects.all()
+        contacts = ContactModel.objects.all()
 
         # this query for category
         categorys = category.Category.objects.all()
@@ -21,6 +26,14 @@ class DashboardView(View):
             category_list = category_paginator.page(1)
         except EmptyPage:
             category_list = category_paginator.page(category_paginator.num_pages)
+        
+        # total price count
+        revenew = orders.Order.objects.all()
+        revenewsum = 0
+        for rev in revenew:
+            if rev.status == True:
+                revenewsum+=rev.price
+        #end revenew total price
 
         # this query for order
         myorders = orders.Order.objects.all()
@@ -47,8 +60,11 @@ class DashboardView(View):
 
         context = {
             'customers':customers,
+            'contacts':contacts,
+            'contactscount':contacts.count(),
             'categorys':category_list,
             'orders':order_list,
+            'revenewsum':revenewsum,
             'products':products_list, #pagination done
         }
         return render(request,'dashboard.html',context)
@@ -106,7 +122,31 @@ class ProductDelete(View):
         return redirect('/adminsite')
 
 
+class OrderStatusUpdate(UpdateView):
+    model = Order
+    form_class = OrderStatusUpdateForm
+    template_name = 'CRUD/orderstatusupadate.html'
+    success_url = '/adminsite'
 
 
+class ContactNotificaton(View):
+    def get(self,request):
+        contacts = ContactModel.objects.all()
+        # total price count
+        revenew = orders.Order.objects.all()
+        revenewsum = 0
+        for rev in revenew:
+            if rev.status == True:
+                revenewsum+=rev.price
+        #end revenew total price
+        context = {
+            'contacts':contacts,
+            'contactscount':contacts.count(),
+        }
+        return render(request,'notifications.html',context)
 
 
+def deletecontact(request,id):
+    contact = ContactModel.objects.get(id=id)
+    contact.delete()
+    return redirect('ContactNotificaton')

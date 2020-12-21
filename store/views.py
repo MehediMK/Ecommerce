@@ -1,9 +1,12 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import HttpResponse
+
 from .models.product import Product
 from .models.category import Category
 from .models.customer import Customer
 from .models.orders import Order
+from .models.contact import ContactModel
+
 from django.contrib.auth.hashers import make_password,check_password
 from django.views import View
 from .middlewares.auth import auth_middleware
@@ -121,6 +124,16 @@ class Signup(View):
             }
             return render(request,'signup.html',context)
 
+class CustomerProfile(View):
+    def get(self,request):
+        customerid = request.session['customer']
+        print(customerid)
+        mycustomer = Customer.objects.get(id=int(customerid))
+        print(mycustomer.first_name)
+        context ={
+            'customer':mycustomer,
+        }
+        return render(request,'customerProfile.html',context)
 
 class Login(View):
     return_Url = None
@@ -234,3 +247,28 @@ class IncDec(View):
         return redirect('cart')
 
 
+class ContactView(View):
+    def get(self,request):
+        return render(request,'contact.html')
+    def post(self,request):
+        re = request.POST
+        fname = re.get('fname')
+        lname = re.get('lname')
+        email = re.get('email')
+        phone = re.get('phone')
+        comments = re.get('comments')
+        if fname != '' and lname != '' and email != '' and phone != '' and comments != '':
+            print(fname,lname,email,phone,comments)
+            contact = ContactModel.objects.create(fname=fname,lname=lname,email=email,phone=phone,comments=comments)
+            contact.save()
+            return redirect('home')
+        else:
+            return render(request,'contact.html')
+
+
+class AboutUsView(View):
+    def get(self,request):
+        return render(request,'aboutus.html')
+
+def pymentoptionview(request):
+    return render(request,'pymentoption.html')

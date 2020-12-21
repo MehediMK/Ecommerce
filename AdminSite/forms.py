@@ -1,6 +1,7 @@
 from django import forms
 from store.models.category import Category
 from store.models.product import Product
+from store.models.orders import Order
 
 class AddCategoryForm(forms.ModelForm):
     class Meta:
@@ -30,3 +31,9 @@ class AddProductForm(forms.ModelForm):
         self.fields['category'].widget.attrs.update({'class':'form-control text-info',})
         self.fields['image'].widget.attrs.update({'class':'form-control-file border','type':'file'})
         self.fields['image'].label = 'Select your Image'
+
+
+class OrderStatusUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status']
