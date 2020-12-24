@@ -38,7 +38,7 @@
         </ul>
         <!-- search option start -->
         <form action="{% url 'ProductSearch' %}" method="GET" class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search" aria-label="Search">
+          <input class="form-control mr-sm-2" type="text" value="{{mysearch}}" name="search" placeholder="Search" aria-label="Search">
           <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Search">
         </form>
         <!-- search option end here -->

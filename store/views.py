@@ -285,7 +285,8 @@ def pymentoptionview(request):
 
 class ProductSearch(View):
     def get(self,request):  
-        context = {}      
+        context = {}  
+        search = request.POST.get('search')    
         mysearch = request.GET.get('search')
         context['mysearch'] = mysearch
 
@@ -330,13 +331,7 @@ class ProductSearch(View):
                 products_list = home_paginator.page(home_paginator.num_pages)
                 context['products'] = products_list
             # end pagination query
-
-            # context = {
-            #     'products':products_list,
-            #     'categorys':categories,
-            #     'search':mysearch,
-            #     'message':message,
-            # }
+            
         print('your are: ',request.session.get('customer'))
 
         return render(request,'ProductSearch.html',context)
@@ -345,6 +340,7 @@ class ProductSearch(View):
     def post(self,request):
         product = request.POST.get('productid')
         remove = request.POST.get('remove')
+        search = request.POST.get('search')
         cart = request.session.get('cart')
         if cart:
             quantity = cart.get(product)
@@ -363,5 +359,5 @@ class ProductSearch(View):
             cart[product] = 1
         request.session['cart'] = cart
         print(request.session['cart'])
-        return redirect('ProductSearch')
+        return HttpResponseRedirect(f'?search={search}') 
 
