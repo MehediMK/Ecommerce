@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,HttpResponseRedirect
+from django.shortcuts import render,redirect,HttpResponseRedirect,get_object_or_404
 from django.http import HttpResponse
 
 from .models.product import Product
@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 
-# video 57 running
+
 
 class Index(View):
     def get(self,request):
@@ -70,6 +70,15 @@ class Index(View):
         request.session['cart'] = cart
         print(request.session['cart'])
         return redirect('home')
+
+
+class ProductDetailView(View):
+    def get(self,request,id):
+        product = get_object_or_404(Product, id=id)
+        context = {
+            'product':product,
+        }
+        return render(request,'productdetailview.html',context)
 
 
 class Signup(View):
@@ -272,3 +281,87 @@ class AboutUsView(View):
 
 def pymentoptionview(request):
     return render(request,'pymentoption.html')
+
+
+class ProductSearch(View):
+    def get(self,request):  
+        context = {}      
+        mysearch = request.GET.get('search')
+        context['mysearch'] = mysearch
+
+        # here check cart empty or not
+        cart = request.session.get('cart')
+        if not cart:
+            request.session['cart'] = {}
+
+        products = None
+
+        categories = Category.get_all_category()
+        context['categorys'] = categories
+
+        categoryID = request.GET.get('category')
+        message = None
+        # here get product by search name
+        if mysearch:
+            myproductsearch = Product.objects.filter(name__icontains=mysearch)
+            if myproductsearch:
+                products=myproductsearch
+            else:
+                message = 'Search not found'
+        else:
+            if categoryID:
+                products = Product.get_all_products_by_categoryid(categoryID)
+            else:
+                products = Product.get_all_products()
+        # here check froduct or not th
+        if message:
+            context['message'] = message
+        else:
+            # this query for pagination
+            productview = request.GET.get('productview', 1)
+            home_paginator = Paginator(products, 12)
+            try:
+                products_list = home_paginator.page(productview)
+                context['products'] = products_list
+            except PageNotAnInteger:
+                products_list = home_paginator.page(1)
+                context['products'] = products_list
+            except EmptyPage:
+                products_list = home_paginator.page(home_paginator.num_pages)
+                context['products'] = products_list
+            # end pagination query
+
+            # context = {
+            #     'products':products_list,
+            #     'categorys':categories,
+            #     'search':mysearch,
+            #     'message':message,
+            # }
+        print('your are: ',request.session.get('customer'))
+
+        return render(request,'ProductSearch.html',context)
+
+
+    def post(self,request):
+        product = request.POST.get('productid')
+        remove = request.POST.get('remove')
+        cart = request.session.get('cart')
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                if remove:
+                    if quantity <= 1:
+                        cart.pop(product)
+                    else:
+                        cart[product] = quantity-1
+                else:
+                    cart[product] = quantity+1
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+        request.session['cart'] = cart
+        print(request.session['cart'])
+        return redirect('ProductSearch')
+

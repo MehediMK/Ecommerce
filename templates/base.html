@@ -18,11 +18,13 @@
   </head>
   <body>
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">EBazar</a>
-    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-        aria-expanded="false" aria-label="Toggle navigation"></button>
-    <div class="collapse navbar-collapse" id="collapsibleNavId">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav m-auto mt-2 mt-lg-0">
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
@@ -34,6 +36,13 @@
                 <a class="nav-link" href="{% url 'aboutus' %}">About Us</a>
             </li>
         </ul>
+        <!-- search option start -->
+        <form action="{% url 'ProductSearch' %}" method="GET" class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search" aria-label="Search">
+          <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Search">
+        </form>
+        <!-- search option end here -->
+
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             {% if request.session.customer %}
 
@@ -92,9 +101,7 @@
           <h5 class="text-uppercase">Footer Content</h5>
   
           <p class=" text-justify">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-            molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
-            voluptatem veniam, est atque cumque eum delectus sint!
+            Here are all footer messsages from Ebazar.EBazar does not just sell lifestyle products, EBazar is here to become a lifestyle! Be it simple, casual or luxurious; trendy, unique or traditional, EBazar presents you all. Daily lives, occasions, needs and necessities, celebrations, desires and wish lists – EBazar checks it all off.
           </p>
         </div>
         <!--Grid column-->

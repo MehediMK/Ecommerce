@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 {% load cart %}
 
@@ -14,6 +15,12 @@
                 {% endfor %}
             </div>
         </div>
+        <!-- check search product or not -->
+        {% if message %}
+        <div class="col-lg-10 mx-auto mt-4">
+            <h3 class="text-center"> {{ message }} : {{mysearch}}</h3>
+        </div>
+        {% else %}
 
         <!-- all product list -->
         <div class="col-lg-10 mx-auto">
@@ -87,7 +94,8 @@
 
             </div>
         </div>
+        
+        {% endif %}
     </div>
 </div>
-
 {% endblock %}

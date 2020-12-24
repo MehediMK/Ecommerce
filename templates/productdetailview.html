@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% block content %}
+
+
+<div class="container mt-5">
+        <h3 class="text-center">Product Details</h3><hr>
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <img src="{{ product.image.url }}" class="border rounded" alt="" height="250px" width="250px" class="card-img-top"><br>
+        </div>
+        <div class="col-md-8 col-sm-12 border">
+            <div class="col-md-12 mt-3">
+                <u>Name:</u>
+                <h3>{{ product.name }}</h3>
+                <u>Price:</u>
+                <h3>{{ product.price }} / {{ product.unit }}</h3>
+                <u>Description:</u>
+                <p>{{ product.description }} </p>
+                <u>Category:</u>
+                <h3 class="mx-auto tex-center">{{ product.category }}</h3>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
