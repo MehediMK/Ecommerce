@@ -22,7 +22,11 @@
     {% for product in products %}
         <tr>          
           <td>{{ forloop.counter }}</td>
-          <td><img src="{{ product.image.url }}" width="100px" height="100px" alt=""></td>
+          <td>
+            <a href="{% url 'productdetailview' product.id %}">
+            <img src="{{ product.image.url }}" width="100px" height="100px" alt="">
+          </a>
+          </td>
           <td>{{ product.name}}</td>
           <td>{{ product.category}}</td>
           <td>{{ product.price|currency }}/{{product.unit}}</td>
@@ -93,15 +97,15 @@
           <form action="/check-out" method="POST">
           {% csrf_token %}
           <div class="form-group">
-            <label for="bkashtrxid">Enter bKash TrxID:</label>
+            <label for="bkashtrxid">Enter bKash TrxID:<span class="text-danger">*</span> </label>
             <input type="text" name="bkashtrxid" id="bkashtrxid" class="form-control" placeholder="bKash TrxID:" required>
           </div>
           <div class="form-group">
-            <label for="address">Address:</label>
+            <label for="address">Address:<span class="text-danger">*</span></label>
             <input type="text" name="address" id="address" class="form-control" placeholder="# 193,east-kazipara,mirpur-10,Dhaka" required>
           </div>
           <div class="form-group">
-            <label for="phone">Phone No:</label>
+            <label for="phone">Phone No:<span class="text-danger">*</span></label>
             <input type="text" name="phone" id="phone" class="form-control" placeholder="018******" required>
           </div>
             <input type="submit" class="btn btn-info float-right" value="Check Out">
